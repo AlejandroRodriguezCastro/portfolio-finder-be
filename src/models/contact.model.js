@@ -14,9 +14,13 @@ const contactSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        owner: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+        message: { 
+            type: String,
+            required: true,
+        },
+        readed: {
+            type: Boolean,
+            default: false
         }
     },
     {

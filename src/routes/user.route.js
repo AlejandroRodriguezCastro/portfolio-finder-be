@@ -1,15 +1,19 @@
-const express = require('express');
+const { Router } = require('express');
 const userController = require('../controllers/user.controller');
-const router = express.Router();
+const checkFields = require('../middlewares/validateFields');
+const { check } = require('express-validator');
+const router = Router();
 
 
-router.route('/').get(async (req, res) => {
-    res.json(await userController.getUsers());
-});
+router.get('/', userController.getUsers);
 
-router.route('/').post(async (req, res) => {
-    res.send(await userController.createUser(req.body));
-});
-//post(validate(userValidation.createUser), userController.createUser).get(validate(userValidation.createUser),userController.getUsers);
+router.post('/',
+    [
+        check('name', 'The name is required').not().isEmpty(),
+        check('email', 'The email is required').not().isEmpty(),
+        check('password', 'The password is required').not().isEmpty(),
+        checkFields,
+    ],
+    userController.createUser);
 
 module.exports = router;

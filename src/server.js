@@ -1,15 +1,16 @@
+const path = require('path');
+require('dotenv').config({path: path.resolve(__dirname, '.env')});
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('./routes');   
+const {dbConnection} = require('./db/config');
 
 const app = express();
 
-
 app.use(morgan('dev'));
-
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
@@ -18,20 +19,15 @@ app.use(helmet());
 app.use(express.json());
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // enable cors
 app.options('*', cors());
 app.use(cors());
 
 // DB connection
+dbConnection();
 
-try {
-    mongoose.connect('mongodb+srv://alejandrogrc:kLvAhFOFjBVeillF@cluster0.0alpzh1.mongodb.net/?retryWrites=true&w=majority',
-        {useNewUrlParser: true, useUnifiedTopology: true});
-} catch (error) {
-    console.log(error);
-}
 
 const Cat = mongoose.model('Cat', { name: String });
 
@@ -41,6 +37,9 @@ kitty.save().then(() => console.log('meow'));
 // Routes
 app.use('/api', routes);
 
-app.listen(4000, () => {
-    console.log('Server is running on port 4000');
+// App init
+app.listen(process.env.PORT, () => {
+    console.log('Servidor corriendo en puerto ' + process.env.PORT + '!');
 });
+
+module.exports = app;
