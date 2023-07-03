@@ -1,5 +1,7 @@
 require('dotenv').config();
 const UserService = require('../services/user.service');
+const Auth = require('../services/auth.service');
+const jwt = require('jsonwebtoken');
 
 class UserController {
     async getUsers(req, res) {
@@ -49,14 +51,14 @@ class UserController {
         }
     }
 
-    async login(req, res) {
+    async loginUser(req, res) {
         try {
             const {email, password} = req.body;
-            let isUserRegistered = await auth.hasValidCredentiales(email, password);
+            let isUserRegistered = await Auth.hasValidCredentials(email, password);
             if (!isUserRegistered) {
                 const user = await UserService.getUserByEmail(email);
                 const token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
-                    expiresIn: proccess.env.EXPIRES_IN,
+                    expiresIn: process.env.EXPIRES_IN,
                 });
 
                 return res.status(200).json({

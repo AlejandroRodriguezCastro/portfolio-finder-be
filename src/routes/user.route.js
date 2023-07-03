@@ -7,6 +7,8 @@ const router = Router();
 
 router.get('/', userController.getUsers);
 
+router.get('/:id', userController.getUserById);
+
 router.post('/',
     [
         check('name', 'The name is required').not().isEmpty(),
@@ -15,5 +17,13 @@ router.post('/',
         checkFields,
     ],
     userController.createUser);
+
+router.post('/login',
+    [
+        check('email', 'The email is required').not().isEmpty(),
+        check('password', 'The password is required').not().isEmpty(),
+        checkFields,
+    ],
+    userController.loginUser);
 
 module.exports = router;

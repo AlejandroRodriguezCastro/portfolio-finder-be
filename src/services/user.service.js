@@ -40,6 +40,16 @@ class UserService{
             throw new Error('Error al crear el usuario');
         }
     }
+
+    async getUserByEmail(email){
+        try {
+            let user = await User.findOne({email: email});
+            return user;
+        } catch (err) {
+            console.error(err);
+            throw new Error('Error al obtener el usuario con email');
+        }
+    }
 }
 
 module.exports = new UserService();

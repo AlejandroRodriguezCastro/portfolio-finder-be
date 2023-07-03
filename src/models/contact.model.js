@@ -10,7 +10,7 @@ const contactSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        mail: {
+        email: {
             type: String,
             required: true,
         },
@@ -20,7 +20,8 @@ const contactSchema = new mongoose.Schema(
         },
         readed: {
             type: Boolean,
-            default: false
+            default: false,
+            required: false,
         }
     },
     {
