@@ -4,7 +4,6 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const routes = require('./routes');   
 const {dbConnection} = require('./db/config');
 
@@ -27,12 +26,6 @@ app.use(cors());
 
 // DB connection
 dbConnection();
-
-
-const Cat = mongoose.model('Cat', { name: String });
-
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
 
 // Routes
 app.use('/api', routes);
