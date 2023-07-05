@@ -38,6 +38,13 @@ class UserController {
 
     async createUser(req, res) {
         try {
+            let isUserRegistered = await UserService.getUserByEmail(req.body.email);
+            if (isUserRegistered) {
+                return res.status(409).json({
+                    method: "createUser",
+                    message: "El usuario ya existe",
+                });
+            }
             let newUser = await UserService.createUser(req.body);
             return res.status(201).json({
                 message: "User Created!",
@@ -55,12 +62,11 @@ class UserController {
         try {
             const {email, password} = req.body;
             let isUserRegistered = await Auth.hasValidCredentials(email, password);
-            if (!isUserRegistered) {
+            if (isUserRegistered) {
                 const user = await UserService.getUserByEmail(email);
                 const token = jwt.sign(user.toJSON(), process.env.SECRET_KEY, {
                     expiresIn: process.env.EXPIRES_IN,
                 });
-
                 return res.status(200).json({
                     status: 200,
                     token,
@@ -68,6 +74,7 @@ class UserController {
                 });
             } else {
                 return res.status(401).json({
+                    status: 401,
                     message: "Unauthorized",
                 });
             }

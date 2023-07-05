@@ -44,6 +44,8 @@ class UserService{
     async getUserByEmail(email){
         try {
             let user = await User.findOne({email: email});
+            console.log("getUserByEmail");
+            console.log(user);
             return user;
         } catch (err) {
             console.error(err);
