@@ -5,6 +5,12 @@ class ContactController {
     async getContacts(req, res) {
         try {
             const contacts = await ContactService.getContacts();
+            if (!contacts) {
+                return res.status(404).json({
+                    method: "getContacts",
+                    message: "No hay contactos",
+                });
+            }
             return res.status(200).json(contacts);
         } catch (err) {
             console.error(err);
@@ -52,7 +58,6 @@ class ContactController {
     
     async deleteContact(req, res) {
         try {
-            console.log(req.params.id)
             let contact = await ContactService.getContactById(req.params.id);
             if (!contact) {
                 return res.status(404).json({
