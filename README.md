@@ -1,3 +1,7 @@
+# Instalar dependencias
+
+npm install
+
 # Init server
 
-To start run **nodemon**
+Para iniciar el servidor correr **nodemon** desde la carpeta del repositorio
