@@ -4,6 +4,7 @@ const ContactService = require('../services/contact.service');
 class ContactController {
     async getContacts(req, res) {
         try {
+            console.log("getContacts");
             const contacts = await ContactService.getContacts();
             if (!contacts) {
                 return res.status(404).json({

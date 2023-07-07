@@ -6,7 +6,8 @@ class AuthService {
     async hasValidCredentials(email, password) {
         try {
             const user = await User.findOne({ email });
-
+            console.log(user);
+            console.log(await bcrypt.compare(password, user.password));
             if (user && await bcrypt.compare(password, user.password)) {
                 return true;
             }
